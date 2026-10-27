@@ -1,0 +1,78 @@
+[gd_resource type="Theme" format=3 uid="uid://bblwtpxa58eew"]
+
+[ext_resource type="FontFile" uid="uid://debojyojjuj83" path="res://theme/PTMono-Regular.ttf" id="1_ellmp"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_dkghw"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(1, 1, 1, 0.75)
+draw_center = false
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+corner_detail = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ellmp"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(0.1, 0.1, 0.1, 0.6)
+border_color = Color(0, 0, 0, 0.6)
+corner_detail = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_aqwiw"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(0.1, 0.1, 0.1, 0.3)
+border_color = Color(0, 0, 0, 0.3)
+corner_detail = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_08vl2"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(1, 1, 1, 0.75)
+draw_center = false
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+corner_detail = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_af2hw"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(0.101960786, 0.101960786, 0.101960786, 0.11372549)
+border_color = Color(0, 0, 0, 0.6)
+corner_detail = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vpc0t"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(0.1, 0.1, 0.1, 0.3)
+border_color = Color(0, 0, 0, 0.3)
+corner_detail = 5
+
+[resource]
+default_font = ExtResource("1_ellmp")
+LineEdit/colors/font_color = Color(0.89411765, 0.89411765, 0.89411765, 1)
+LineEdit/colors/font_uneditable_color = Color(1, 1, 1, 1)
+LineEdit/font_sizes/font_size = 20
+LineEdit/styles/focus = SubResource("StyleBoxFlat_dkghw")
+LineEdit/styles/normal = SubResource("StyleBoxFlat_ellmp")
+LineEdit/styles/read_only = SubResource("StyleBoxFlat_aqwiw")
+TextEdit/colors/font_color = Color(7.991113, 7.991113, 7.991113, 1)
+TextEdit/styles/focus = SubResource("StyleBoxFlat_08vl2")
+TextEdit/styles/normal = SubResource("StyleBoxFlat_af2hw")
+TextEdit/styles/read_only = SubResource("StyleBoxFlat_vpc0t")
