@@ -7,7 +7,7 @@ func _ready() -> void:
 var hovered = false
 var held = false
 var offset: Vector2
-const DRAG_SPEED = 50.0
+const DRAG_SPEED = 75.0
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
@@ -39,4 +39,6 @@ func _on_gui_input(event: InputEvent) -> void:
 		held = false
 		print("Released")
 		pass
+
+		
 	pass # Replace with function body.
