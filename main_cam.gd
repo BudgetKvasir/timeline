@@ -29,20 +29,22 @@ func _process(delta: float) -> void:
 	# top_margin=15 mouse.y=10 want speed_mod=.33333
 		# (top_margin - mouse.y) / edge_range
 	var mouse_pos = get_local_mouse_position()
-# # # # # # Vertical edge detection # # # # # # #
-	if mouse_pos.y < top_margin: 
-		speed_mod = (top_margin - mouse_pos.y) / edge_range
-		position.y -= edge_speed * speed_mod
-	if mouse_pos.y > bottom_margin:
-		speed_mod = (mouse_pos.y - bottom_margin) / edge_range
-		position.y += edge_speed * speed_mod
- # # # # # Horizontal edge detection # # # # # #
-	if mouse_pos.x < left_margin:
-		speed_mod = (left_margin - mouse_pos.x) / edge_range
-		position.x -= edge_speed * speed_mod
-	if mouse_pos.x > right_margin:
-		speed_mod = (mouse_pos.x - right_margin) / edge_range
-		position.x += edge_speed * speed_mod
+	if Input.is_action_pressed("edge_scroll_enable"): # Make a signal from Card to enable edge
+		# scrolling if a card is held
+	# # # # # # Vertical edge detection # # # # # # #
+		if mouse_pos.y < top_margin: 
+			speed_mod = (top_margin - mouse_pos.y) / edge_range
+			position.y -= edge_speed * speed_mod
+		if mouse_pos.y > bottom_margin:
+			speed_mod = (mouse_pos.y - bottom_margin) / edge_range
+			position.y += edge_speed * speed_mod
+	 # # # # # Horizontal edge detection # # # # # #
+		if mouse_pos.x < left_margin:
+			speed_mod = (left_margin - mouse_pos.x) / edge_range
+			position.x -= edge_speed * speed_mod
+		if mouse_pos.x > right_margin:
+			speed_mod = (mouse_pos.x - right_margin) / edge_range
+			position.x += edge_speed * speed_mod
 	# Camera controls with arrow keys w/ modifier
 	if Input.is_action_pressed("speed"):
 		speed_mod = 2
@@ -55,4 +57,10 @@ func _process(delta: float) -> void:
 	if Input.is_action_pressed("mv_down"):
 		position.y += arrow_speed * speed_mod
 	speed_mod = 1
+	
 	pass
+
+
+func _on_cam_pos_reset_pressed() -> void:
+	position = Vector2(0,0)
+	pass # Replace with function body.
