@@ -1,17 +1,14 @@
 extends Camera2D
 
-var arrow_speed = 5
-var edge_speed = 10
-var edge_range = 50
+const arrow_speed = 5
+const scroll_speed = 15
+@export var edge_range := Vector2(50, 50)
+var scroll_speed_mod := Vector2(1,1)
 var speed_mod = 1
 var zoom_speed = Vector2(0.01,0.01)
-var top_margin
-var bottom_margin
-var left_margin
-var right_margin
-var margin_zoom_step = 15
 var drag = false
 var start_pos
+var start_zoom
 
 
 # Get viewport size, track mouse pos and if it's within a certain distance of the edge of the view port
@@ -20,14 +17,8 @@ var start_pos
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	$ZoomTracker.size = view_size
-	$ZoomTracker.position = offset
-	top_margin = edge_range
-	bottom_margin = view_size.y - edge_range
-	left_margin = edge_range
-	right_margin = view_size.x - edge_range
 	start_pos = position
-
+	start_zoom = zoom
 	pass # Replace with function body.
 
 
@@ -39,42 +30,39 @@ func _process(_delta: float) -> void:
 		# (top_margin - mouse.y) / edge_range
 	if Input.is_action_just_released("wheel_scroll_up"): # Zoom in
 		#print(zoom)
-		if zoom < Vector2(4,4):
-			zoom += zoom_speed
+		if zoom.x < 3 :
+			zoom_cam(zoom_speed)
 		#print("Scroll up")
 		pass
 	if Input.is_action_just_released("wheel_scroll_down"): # Zoom out
 		#print(zoom)
-		if zoom > Vector2(0.010001,0.010001):
-			zoom -= zoom_speed
+		if (zoom.x - zoom_speed.x) > 0.0:
+			zoom_cam(-zoom_speed)
 		#print("scroll down")
 		pass
-	$ZoomTracker.size = view_size / zoom
-	$ZoomTracker.position = position / offset # Need position offset
 	
-	var mouse_pos = get_local_mouse_position()
+	
+	
 
 	# Checks for enable key held or if a card is being dragged towards the edge of the screen 
 	if Input.is_action_pressed("edge_scroll_enable") or drag:
-	# # # # # # Vertical edge detection # # # # # # #
-
-		if mouse_pos.y < top_margin: 
-
-			speed_mod = (top_margin - mouse_pos.y) / edge_range
-			position.y -= edge_speed * speed_mod
-		if mouse_pos.y > bottom_margin:
-			speed_mod = (mouse_pos.y - bottom_margin) / edge_range
-			position.y += edge_speed * speed_mod
-	 # # # # # Horizontal edge detection # # # # # #
-		if mouse_pos.x < left_margin:
-
-			speed_mod = (left_margin - mouse_pos.x) / edge_range
-			position.x -= edge_speed * speed_mod
-		if mouse_pos.x > right_margin:
-			speed_mod = (mouse_pos.x - right_margin) / edge_range
-			position.x += edge_speed * speed_mod
-		#print(margins)
-		#print(position)
+		#var debug_msg = ""
+		var mouse_pos = get_clamped_mouse_position()
+		update_scroll_speed_mod(mouse_pos)
+		if mouse_pos.x < edge_range.x: # Move left
+			position.x -= scroll_speed * scroll_speed_mod.x
+			#debug_msg += format_debug("left", mouse_pos)
+		if mouse_pos.x > view_size.x - edge_range.x: # Move right
+			position.x += scroll_speed * scroll_speed_mod.x
+			#debug_msg += format_debug("right", mouse_pos)
+		if mouse_pos.y < edge_range.y: # Move up
+			position.y -= scroll_speed * scroll_speed_mod.y
+			#debug_msg += format_debug("top", mouse_pos)
+		if mouse_pos.y > view_size.y - edge_range.y: # Move Down
+			position.y += scroll_speed * scroll_speed_mod.y
+			#debug_msg += format_debug("bottom", mouse_pos)
+		#print(debug_msg)
+		pass
 	
 	# Camera controls with arrow keys w/ modifier
 	if Input.is_action_pressed("speed"):
@@ -90,9 +78,58 @@ func _process(_delta: float) -> void:
 	speed_mod = 1
 	
 	pass
+	
+func zoom_cam(delta: Vector2) -> void:
+	var mouse_pos = get_global_mouse_position()
+	zoom += delta
+	var new_mouse_pos = get_global_mouse_position()
+	position += mouse_pos - new_mouse_pos
+	pass
 
+func get_clamped_mouse_position() -> Vector2:
+	var mouse_pos = get_viewport().get_mouse_position()
+	if mouse_pos.x < 0: mouse_pos.x = 0
+	if mouse_pos.x > view_size.x: mouse_pos.x = view_size.x
+	if mouse_pos.y < 0: mouse_pos.y = 0
+	if mouse_pos.y > view_size.y: mouse_pos.y = view_size.y
+	return mouse_pos
+
+# Need mouse position, view_size and edge_range
+func update_scroll_speed_mod(mouse_pos: Vector2) -> void:
+	var edge_start := Vector2(view_size - Vector2(50, 50))
+	var edge_distance := Vector2(0,0)
+	edge_distance.x = mouse_pos.x - edge_start.x if mouse_pos.x > 50 else edge_range.x - mouse_pos.x
+	edge_distance.y = mouse_pos.y - edge_start.y if mouse_pos.y > 50 else edge_range.y - mouse_pos.y
+	scroll_speed_mod = edge_distance / edge_range
+	
+	pass
+
+func format_debug(dir: String, pos: Vector2) -> String: # dir N/S/E/W ; pos mouse_pos
+	var format_string = "{dir} : {dis}/{rng} {per}\n"
+	var dis: float # Distance from the edge of the screen, starting from edge of detection range
+	var rng: float # Detection range from edge of screen (edge_range short hand)
+	match dir:
+		"left", "right":
+			dis = pos.x - (view_size.x - edge_range.x) if pos.x > 50 else edge_range.x - pos.x
+			# dis = pos.x - (view_size.x - edge_range.x) if dir == "right" else pos.x
+			rng = edge_range.x
+		"top", "bottom":
+			dis = pos.y - (view_size.y - edge_range.y) if dir == "bottom" else edge_range.y - pos.y
+			rng = edge_range.y
+	return format_string.format({"dir": "%6s" % dir, "dis": "%05.2f" % dis, "rng": "%03d" % rng, "per": "%03.2f" % (dis / rng)})
 
 func _on_cam_pos_reset_pressed() -> void:
 	position = start_pos
-	zoom = Vector2(1.0,1.0)
+	zoom = start_zoom
 	pass # Replace with function body.
+
+func _on_track_pad_toggled(toggled_on: bool) -> void:
+	if toggled_on:
+		zoom_speed = Vector2(0.04,0.04)
+	if !toggled_on:
+		zoom_speed = Vector2(0.01,0.01)
+	pass # Replace with function body.
+
+func _on_drag(dragging: bool) -> void:
+	drag = dragging
+	pass

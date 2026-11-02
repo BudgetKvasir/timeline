@@ -1,5 +1,7 @@
 extends Control
 
+signal drag(dragging)
+
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	pass # Replace with function body.
@@ -45,12 +47,12 @@ func _on_gui_input(event: InputEvent) -> void:
 	if (event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT) and event.is_pressed() and !placing:
 		held = true
 		offset = get_local_mouse_position().abs() * -1
-		get_parent().set_drag((held and hovered))
+		drag.emit(held and hovered)
 		#print("Held")
 		pass
 	if (event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT) and event.is_released() and !placing:
 		held = false
-		get_parent().set_drag((held and hovered))
+		drag.emit(held and hovered)
 		#print("Released")
 		pass
 

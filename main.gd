@@ -9,13 +9,11 @@ func _ready() -> void:
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta: float) -> void:
+	
 	pass
-
-func set_drag(drag: bool):
-	$MainCam.drag = drag
-	pass
-
+	
 func _on_add_card_button_up() -> void:
 	var card = Card.instantiate()
 	add_child(card)
+	card.drag.connect($MainCam._on_drag)
 	pass # Replace with function body.
