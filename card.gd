@@ -2,15 +2,23 @@ extends Control
 
 signal drag(dragging)
 
-# Called when the node enters the scene tree for the first time.
-func _ready() -> void:
-	pass # Replace with function body.
-
 var hovered = false
 var held = false
 var placing = true
 var offset: Vector2
 const DRAG_SPEED = 75.0
+var markers = true
+var anchors: Array
+# Sets the ratio to full x/y dimension that anchors will be at, 0.5 = anchor @ size*0.5
+const ANCHOR_REF: Array = [0, 0.5, 1] 
+
+# Called when the node enters the scene tree for the first time.
+func _ready() -> void:
+	for i in range(9):
+		anchors.append(Vector2(0,0))
+	update_anchors()
+	
+	pass # Replace with function body.
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
@@ -25,7 +33,21 @@ func _process(delta: float) -> void:
 		var weight = 1 - exp(-DRAG_SPEED * delta)
 		position = (position.lerp(mouse_pos, weight))
 		pass
+	
 	pass
+
+# update_anchors gets local coordinates for anchor locations, 
+# adding the resulting Vector2 for the desired anchor point to the card's 
+# position gets you the global position for the anchor point
+func update_anchors() -> void: 
+	for i in anchors.size():
+		@warning_ignore("integer_division") # Discarding the decimal is desired
+		anchors[i] = Vector2(size.x*ANCHOR_REF[i%3], size.y*ANCHOR_REF[i/3])
+	#print(anchors)
+	pass
+
+func get_main_debug() -> bool:
+	return get_tree().root.get_node("/root/Main").Debug
 
 func _on_mouse_entered() -> void:
 	hovered = true
@@ -40,10 +62,9 @@ func _on_mouse_exited() -> void:
 func _on_gui_input(event: InputEvent) -> void:
 	#print("InputEvent: " + event.as_text())
 	if placing and (event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT) and event.is_pressed():
-		print("Done placing!")
+		#print("Done placing!")
 		placing = false
 		pass
-	
 	if (event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT) and event.is_pressed() and !placing:
 		held = true
 		offset = get_local_mouse_position().abs() * -1
@@ -55,6 +76,8 @@ func _on_gui_input(event: InputEvent) -> void:
 		drag.emit(held and hovered)
 		#print("Released")
 		pass
+	pass # Replace with function body.
 
-		
+func _on_resized() -> void:
+	update_anchors()
 	pass # Replace with function body.

@@ -28,9 +28,13 @@ theme_override_constants/separation = 6
 layout_mode = 2
 text = "Camera Reset"
 
-[node name="TrackPad" type="CheckBox" parent="MenuHUD/MenuMargin/MenuBar/Buttons" unique_id=1013910652]
+[node name="Debug" type="CheckButton" parent="MenuHUD/MenuMargin/MenuBar/Buttons" unique_id=1925681161]
 layout_mode = 2
-text = "Track Pad"
+text = "Debug"
+
+[node name="TrackPad" type="CheckButton" parent="MenuHUD/MenuMargin/MenuBar/Buttons" unique_id=1171915107]
+layout_mode = 2
+text = "Trackpad"
 
 [node name="AddCard" type="Button" parent="MenuHUD/MenuMargin/MenuBar/Buttons" unique_id=1055497424]
 layout_mode = 2
@@ -43,5 +47,6 @@ editor_draw_limits = true
 script = ExtResource("1_0xm2m")
 
 [connection signal="pressed" from="MenuHUD/MenuMargin/MenuBar/Buttons/CamPosReset" to="MainCam" method="_on_cam_pos_reset_pressed"]
+[connection signal="toggled" from="MenuHUD/MenuMargin/MenuBar/Buttons/Debug" to="." method="_on_debug_toggled"]
 [connection signal="toggled" from="MenuHUD/MenuMargin/MenuBar/Buttons/TrackPad" to="MainCam" method="_on_track_pad_toggled"]
 [connection signal="button_up" from="MenuHUD/MenuMargin/MenuBar/Buttons/AddCard" to="." method="_on_add_card_button_up"]

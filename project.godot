@@ -23,7 +23,7 @@ window/size/viewport_height=1080
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/ui_outlines/plugin.cfg")
+enabled=PackedStringArray()
 
 [gui]
 
@@ -81,3 +81,4 @@ wheel_scroll_down={
 rendering_device/driver.windows="d3d12"
 renderer/rendering_method="gl_compatibility"
 renderer/rendering_method.mobile="gl_compatibility"
+environment/defaults/default_clear_color=Color(0, 0, 0.078431375, 1)

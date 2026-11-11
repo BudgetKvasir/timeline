@@ -5,6 +5,19 @@
 [ext_resource type="Script" uid="uid://ck5l13fl35dqg" path="res://title.gd" id="3_e484p"]
 [ext_resource type="Texture2D" uid="uid://byvqqpjtuw1cr" path="res://theme/EditIcon32x32.png" id="3_q5obu"]
 [ext_resource type="Script" uid="uid://b547pjdwwuw4j" path="res://content.gd" id="5_fpac0"]
+[ext_resource type="Script" uid="uid://bcnmu3ho6vjux" path="res://anchor_overlay.gd" id="6_1i5pp"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_if47m"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color(0.58431375, 0.4627451, 1, 0)
+expand_margin_left = 4.0
+expand_margin_top = 4.0
+expand_margin_right = 4.0
+expand_margin_bottom = 4.0
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fpac0"]
 content_margin_left = 0.0
@@ -16,13 +29,10 @@ corner_detail = 5
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1i5pp"]
 content_margin_left = 4.0
-content_margin_top = 4.0
 content_margin_right = 4.0
-content_margin_bottom = 4.0
 bg_color = Color(0.1, 0.1, 0.1, 0.6)
 corner_radius_top_left = 3
 corner_radius_bottom_left = 3
-corner_detail = 5
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_pjytt"]
 content_margin_left = 4.0
@@ -69,6 +79,8 @@ corner_radius_top_left = 3
 corner_radius_bottom_left = 3
 corner_detail = 5
 
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_fpac0"]
+
 [node name="Card" type="Control" unique_id=1225725845]
 custom_minimum_size = Vector2(400, 300)
 custom_maximum_size = Vector2(400, 500)
@@ -97,26 +109,33 @@ grow_vertical = 2
 mouse_filter = 1
 color = Color(0.5058824, 0.5294118, 0.9843137, 1)
 
-[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=648877216]
+[node name="CardContainer" type="PanelContainer" parent="." unique_id=1381769033]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_if47m")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CardContainer" unique_id=648877216]
+layout_mode = 2
 theme_override_constants/separation = 4
 
-[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer" unique_id=1059475131]
-layout_mode = 2
-
-[node name="PanelContainer" type="PanelContainer" parent="VBoxContainer/HBoxContainer" unique_id=1741372750]
+[node name="PanelContainer" type="PanelContainer" parent="CardContainer/VBoxContainer" unique_id=1741372750]
 layout_mode = 2
 size_flags_horizontal = 3
 mouse_filter = 1
 theme_override_styles/panel = SubResource("StyleBoxFlat_fpac0")
 
-[node name="Title" type="LineEdit" parent="VBoxContainer/HBoxContainer/PanelContainer" unique_id=1068281018]
+[node name="HBoxContainer" type="HBoxContainer" parent="CardContainer/VBoxContainer/PanelContainer" unique_id=1059475131]
 layout_mode = 2
+
+[node name="Title" type="LineEdit" parent="CardContainer/VBoxContainer/PanelContainer/HBoxContainer" unique_id=1068281018]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+size_flags_horizontal = 3
 focus_mode = 0
 focus_behavior_recursive = 2
 mouse_filter = 2
@@ -131,7 +150,7 @@ select_all_on_focus = true
 caret_blink = true
 script = ExtResource("3_e484p")
 
-[node name="EditButton" type="Button" parent="VBoxContainer/HBoxContainer/PanelContainer" unique_id=1501847066]
+[node name="EditButton" type="Button" parent="CardContainer/VBoxContainer/PanelContainer/HBoxContainer" unique_id=1501847066]
 layout_mode = 2
 size_flags_horizontal = 8
 mouse_filter = 1
@@ -143,7 +162,7 @@ theme_override_styles/disabled = SubResource("StyleBoxFlat_6lcat")
 theme_override_styles/focus = SubResource("StyleBoxFlat_ut1v0")
 icon = ExtResource("3_q5obu")
 
-[node name="Content" type="TextEdit" parent="VBoxContainer" unique_id=1093769206]
+[node name="Content" type="TextEdit" parent="CardContainer/VBoxContainer" unique_id=1093769206]
 layout_mode = 2
 size_flags_vertical = 3
 mouse_filter = 1
@@ -153,9 +172,17 @@ wrap_mode = 1
 caret_blink = true
 script = ExtResource("5_fpac0")
 
+[node name="AnchorOverlay" type="Panel" parent="." unique_id=367391880]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+theme_override_styles/panel = SubResource("StyleBoxEmpty_fpac0")
+script = ExtResource("6_1i5pp")
+
 [connection signal="gui_input" from="." to="." method="_on_gui_input"]
 [connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
 [connection signal="mouse_exited" from="." to="." method="_on_mouse_exited"]
-[connection signal="text_submitted" from="VBoxContainer/HBoxContainer/PanelContainer/Title" to="VBoxContainer/HBoxContainer/PanelContainer/Title" method="_on_text_submitted"]
-[connection signal="pressed" from="VBoxContainer/HBoxContainer/PanelContainer/EditButton" to="VBoxContainer/HBoxContainer/PanelContainer/Title" method="_on_edit_button_pressed"]
-[connection signal="gui_input" from="VBoxContainer/Content" to="VBoxContainer/Content" method="_on_gui_input"]
+[connection signal="resized" from="." to="." method="_on_resized"]
+[connection signal="text_submitted" from="CardContainer/VBoxContainer/PanelContainer/HBoxContainer/Title" to="CardContainer/VBoxContainer/PanelContainer/HBoxContainer/Title" method="_on_text_submitted"]
+[connection signal="pressed" from="CardContainer/VBoxContainer/PanelContainer/HBoxContainer/EditButton" to="CardContainer/VBoxContainer/PanelContainer/HBoxContainer/Title" method="_on_edit_button_pressed"]
+[connection signal="gui_input" from="CardContainer/VBoxContainer/Content" to="CardContainer/VBoxContainer/Content" method="_on_gui_input"]
