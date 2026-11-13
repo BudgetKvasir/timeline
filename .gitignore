@@ -20,7 +20,7 @@ data_*/
 mono_crash.*.json
 
 # Ignore potentially large directories
-addons/
+# 13.11.26 - removed addons from the list
 data/
 assets/mana_icons
 
