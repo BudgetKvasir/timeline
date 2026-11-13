@@ -3,6 +3,7 @@
 [ext_resource type="Script" uid="uid://c6xkra0ypa6si" path="res://main_cam.gd" id="1_0xm2m"]
 [ext_resource type="Script" uid="uid://1cavxtu8h37v" path="res://main.gd" id="1_h2yge"]
 [ext_resource type="PackedScene" uid="uid://bs6ud3cth06h3" path="res://card.tscn" id="1_ig7tw"]
+[ext_resource type="Script" uid="uid://4hhictwe3y24" path="res://line_manager.gd" id="4_1bvp3"]
 
 [node name="Main" type="Node" unique_id=1216544601]
 script = ExtResource("1_h2yge")
@@ -42,6 +43,7 @@ text = "New Card"
 
 [node name="AddLine" type="Button" parent="MenuHUD/MenuMargin/MenuBar/Buttons" unique_id=2066276654]
 layout_mode = 2
+text = "Add Line"
 
 [node name="MainCam" type="Camera2D" parent="." unique_id=1742179741]
 scale = Vector2(1.44, 1.44)
@@ -49,7 +51,11 @@ offset = Vector2(960, 540)
 editor_draw_limits = true
 script = ExtResource("1_0xm2m")
 
+[node name="LineManager" type="Node2D" parent="." unique_id=433258190]
+script = ExtResource("4_1bvp3")
+
 [connection signal="pressed" from="MenuHUD/MenuMargin/MenuBar/Buttons/CamPosReset" to="MainCam" method="_on_cam_pos_reset_pressed"]
 [connection signal="toggled" from="MenuHUD/MenuMargin/MenuBar/Buttons/Debug" to="." method="_on_debug_toggled"]
 [connection signal="toggled" from="MenuHUD/MenuMargin/MenuBar/Buttons/TrackPad" to="MainCam" method="_on_track_pad_toggled"]
 [connection signal="button_up" from="MenuHUD/MenuMargin/MenuBar/Buttons/AddCard" to="." method="_on_add_card_button_up"]
+[connection signal="pressed" from="MenuHUD/MenuMargin/MenuBar/Buttons/AddLine" to="LineManager" method="_on_add_line_pressed"]

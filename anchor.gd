@@ -1,9 +1,14 @@
 extends Area2D
 
+signal clicked(anchor: Area2D)
+signal entered(anchor: Area2D)
+signal exited
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	input_pickable = false
+	
+	
 	pass # Replace with function body.
 
 
@@ -19,6 +24,17 @@ func _draw() -> void:
 
 func _on_input_event(_viewport: Node, event: InputEvent, _shape_idx: int) -> void:
 	if (event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT) and event.is_pressed():
-		print("Mouse click on anchor %s @ %s" % [self.name, self.position])
+		clicked.emit(self)
+		#print("Mouse click on anchor %s @ %s" % [self.name, self.position])
 		pass
+	pass # Replace with function body.
+
+
+func _on_mouse_entered() -> void:
+	entered.emit(self)
+	pass # Replace with function body.
+
+
+func _on_mouse_exited() -> void:
+	exited.emit()
 	pass # Replace with function body.
