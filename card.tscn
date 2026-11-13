@@ -5,7 +5,6 @@
 [ext_resource type="Script" uid="uid://ck5l13fl35dqg" path="res://title.gd" id="3_e484p"]
 [ext_resource type="Texture2D" uid="uid://byvqqpjtuw1cr" path="res://theme/EditIcon32x32.png" id="3_q5obu"]
 [ext_resource type="Script" uid="uid://b547pjdwwuw4j" path="res://content.gd" id="5_fpac0"]
-[ext_resource type="Script" uid="uid://bcnmu3ho6vjux" path="res://anchor_overlay.gd" id="6_1i5pp"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_if47m"]
 bg_color = Color(0.6, 0.6, 0.6, 0)
@@ -173,11 +172,15 @@ caret_blink = true
 script = ExtResource("5_fpac0")
 
 [node name="AnchorOverlay" type="Panel" parent="." unique_id=367391880]
-layout_mode = 0
-offset_right = 40.0
-offset_bottom = 40.0
+z_index = 1
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxEmpty_fpac0")
-script = ExtResource("6_1i5pp")
 
 [connection signal="gui_input" from="." to="." method="_on_gui_input"]
 [connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]

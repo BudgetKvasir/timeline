@@ -40,6 +40,9 @@ text = "Trackpad"
 layout_mode = 2
 text = "New Card"
 
+[node name="AddLine" type="Button" parent="MenuHUD/MenuMargin/MenuBar/Buttons" unique_id=2066276654]
+layout_mode = 2
+
 [node name="MainCam" type="Camera2D" parent="." unique_id=1742179741]
 scale = Vector2(1.44, 1.44)
 offset = Vector2(960, 540)

@@ -1,0 +1,16 @@
+[gd_scene format=3 uid="uid://bj88cbtwihr1l"]
+
+[ext_resource type="Script" uid="uid://bg6o8o4akav7o" path="res://anchor.gd" id="1_tillw"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_if47m"]
+
+[node name="Anchor" type="Area2D" unique_id=1146395627]
+z_index = 1
+monitoring = false
+monitorable = false
+script = ExtResource("1_tillw")
+
+[node name="AnchorRadius" type="CollisionShape2D" parent="." unique_id=1760417139]
+shape = SubResource("CircleShape2D_if47m")
+
+[connection signal="input_event" from="." to="." method="_on_input_event"]
